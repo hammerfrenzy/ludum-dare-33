@@ -101,9 +101,6 @@ public class Player : MonoBehaviour {
     void FlipScale()
     {
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-
-        //float yRotation = transform.localScale.x == -1 ? 270 : 90;
-        //FlashlightLight.transform.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 
     void OnTriggerEnter2D(Collider2D other)

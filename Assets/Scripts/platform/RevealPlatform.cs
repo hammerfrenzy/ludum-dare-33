@@ -17,7 +17,6 @@ public class RevealPlatform : MonoBehaviour {
 
     public void Reveal()
     {
-        Debug.Log("Revealing");
         platform.Reveal();
     }
 
