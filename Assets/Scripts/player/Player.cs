@@ -128,5 +128,14 @@ public class Player : MonoBehaviour {
                 other.GetComponent<RevealPlatform>().Reveal();
             }
         }
+
+        else if (other.gameObject.CompareTag("SpookZone"))
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                Kid kid = other.GetComponentInParent<Kid>();
+                kid.GetSpooked(transform.position);
+            }
+        }
     }
 }
