@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 
     public Light FlashlightLight;
 
+    Flashlight _flashlight;
     CharacterController2D _controller;
     Animator _animator;
     float _movespeed = 3;
@@ -17,8 +18,7 @@ public class Player : MonoBehaviour {
     {
         _controller = GetComponent<CharacterController2D>();
         _animator = GetComponent<Animator>();
-        //_controller.onTriggerEnterEvent += onTriggerEnterEvent;
-        //_controller.onTriggerExitEvent += onTriggerExitEvent;
+        _flashlight = GetComponentInChildren<Flashlight>();
     }
 
 	// Use this for initialization
@@ -34,10 +34,8 @@ public class Player : MonoBehaviour {
 
     void ProcessActionInput()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-
-        }
+        if (Input.GetKey(KeyCode.F)) _flashlight.PlaceBehind();
+        else if (Input.GetKeyUp(KeyCode.F)) _flashlight.Reset();
     }
 
     void ProcessMovementInput()
@@ -62,18 +60,14 @@ public class Player : MonoBehaviour {
         FlashlightLight.transform.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
-        Debug.Log("T R I G G E R E D");
-    }
-
-    void onTriggerEnterEvent(Collider2D col)
-    {
-        Debug.Log("onTriggerEnterEvent: " + col.gameObject.name);
-    }
-
-    void onTriggerExitEvent(Collider2D col)
-    {
-        Debug.Log("onTriggerExitEvent: " + col.gameObject.name);
+        if (other.gameObject.CompareTag("Platform"))
+        {
+            if (Input.GetKey(KeyCode.F))
+            {
+                other.GetComponent<RevealPlatform>().Reveal();
+            }
+        }
     }
 }

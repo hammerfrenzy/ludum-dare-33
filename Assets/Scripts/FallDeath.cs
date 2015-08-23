@@ -5,9 +5,11 @@ public class FallDeath : MonoBehaviour {
 
     public Transform currentCheckpoint;
 
+    CharacterController2D _controller;
+
 	// Use this for initialization
 	void Start () {
-	
+        _controller = GetComponent<CharacterController2D>();
 	}
 	
 	// Update is called once per frame
@@ -17,7 +19,8 @@ public class FallDeath : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) 
     {
-        StartCoroutine(MoveToCheckpoint(gameObject));
+        if (other.gameObject.CompareTag("SpawnAtCheckpoint"))
+            StartCoroutine(MoveToCheckpoint(gameObject));
     }
 
     IEnumerator MoveToCheckpoint(GameObject gameObject)
@@ -30,5 +33,6 @@ public class FallDeath : MonoBehaviour {
         }
 
         gameObject.transform.position = currentCheckpoint.position;
+        _controller.rigidBody2D.velocity = Vector2.zero;
     }
 }

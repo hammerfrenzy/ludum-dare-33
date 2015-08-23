@@ -15,6 +15,11 @@ public class Flashlight : MonoBehaviour {
 
     public void PlaceBehind()
     {
+        transform.localPosition = new Vector3(-.25f, 0, 0);
+    }
 
+    public void Reset()
+    {
+        transform.localPosition = Vector3.zero;
     }
 }
