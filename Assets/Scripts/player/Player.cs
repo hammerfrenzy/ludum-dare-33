@@ -14,14 +14,17 @@ public class Player : MonoBehaviour {
     Flashlight _flashlight;
     CharacterController2D _controller;
     Animator _animator;
+    FallDeath _respawner;
     float _movespeed = 3;
     float _damping = 20f;
     bool canJump = false;
+    bool canControl = true;
 
     void Awake()
     {
         _controller = GetComponent<CharacterController2D>();
         _animator = GetComponent<Animator>();
+        _respawner = GetComponent<FallDeath>();
         _flashlight = GetComponentInChildren<Flashlight>();
     }
 
@@ -32,8 +35,13 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        ProcessMovementInput();
-        ProcessActionInput();
+        if (canControl) {
+            ProcessMovementInput();
+            ProcessActionInput();
+        }
+        else {
+            _controller.move(_controller.velocity * Time.deltaTime);
+        }
 	}
 
     void ProcessActionInput()
@@ -109,6 +117,14 @@ public class Player : MonoBehaviour {
         {
             canJump = true;
         }
+
+        else if (other.gameObject.CompareTag("KidZone"))
+        {
+            float direction = other.gameObject.transform.position.x < transform.position.x ? 1 : -1;
+            canControl = false;
+            _controller.velocity = new Vector2(3 * direction, 5);
+            StartCoroutine(DelayedRespawn());
+        }       
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -137,5 +153,27 @@ public class Player : MonoBehaviour {
                 kid.GetSpooked(transform.position);
             }
         }
+    }
+
+    public void SetInControl(bool inControl)
+    {
+        canControl = inControl;
+    }
+
+    IEnumerator DelayedRespawn(float respawnTime = .75f)
+    {
+        float time = 0;
+        while (time < respawnTime)
+        {
+            time += Time.deltaTime;
+            if (!canControl && time > respawnTime / 2)
+            {
+                canControl = true;
+            }
+
+            yield return null;
+        }
+
+        _respawner.MoveToCheckpoint();
     }
 }

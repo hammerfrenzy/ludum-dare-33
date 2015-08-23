@@ -22,7 +22,6 @@ public class Kid : MonoBehaviour {
 
         if (Vector2.Distance(target, transform.position) < 0.1f)
         {
-            Debug.Log("Flipping");
             Flip();
         }
 

@@ -51,5 +51,12 @@ namespace UnityStandardAssets._2D
 
             m_LastTargetPosition = target.position;
         }
+
+        public void SnapToTarget()
+        {
+            transform.position = target.position;
+            m_LastTargetPosition = target.position;
+            //m_LookAheadPos = target.position;
+        }
     }
 }
