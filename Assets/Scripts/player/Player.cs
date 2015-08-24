@@ -8,9 +8,13 @@ public class Player : MonoBehaviour {
     public float gravity = -5f;
     public float jumpHeight = 3;
 
+    public Transform shadowTransform;
     public Light FlashlightLight;
     public Animator _shadowAnimator;
     public GUIText CelebrationText;
+    public AudioClip scareClip1;
+    public AudioClip scareClip2;
+    public AudioClip scareClip3;
 
     Flashlight _flashlight;
     CharacterController2D _controller;
@@ -53,14 +57,15 @@ public class Player : MonoBehaviour {
             _flashlight.PlaceBelow();
             if (SUPERCHARGED)
             {
-                if (canJump) _shadowAnimator.Play("GrabCliff");
-                else _shadowAnimator.Play("exposed");
+                if (canJump) _shadowAnimator.Play("GrabCliffBig");
+                else _shadowAnimator.Play("exposedBig");
             }
             else
             {
                 if (canJump) _shadowAnimator.Play("GrabCliff");
                 else _shadowAnimator.Play("exposed");
             }
+            AudioSource.PlayClipAtPoint(RandomScareClip(), transform.position);
         }
         else if (Input.GetKey(KeyCode.J))
         {
@@ -121,6 +126,14 @@ public class Player : MonoBehaviour {
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
+    AudioClip RandomScareClip()
+    {
+        int random = Random.Range(0, 3);
+        if (random == 0) return scareClip1;
+        else if (random == 1) return scareClip2;
+        else return scareClip3;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Jump"))
@@ -140,11 +153,16 @@ public class Player : MonoBehaviour {
         {
             CheckPlatform(other);
         }
-
+        else if (other.gameObject.CompareTag("Checkpoint"))
+        {
+            _respawner.currentCheckpoint = other.gameObject.transform;
+        }
         else if (other.gameObject.CompareTag("Battery"))
         {
+            SUPERCHARGED = true;
             other.gameObject.GetComponent<Battery>().PickedUp();
-            jumpHeight = 6;
+            jumpHeight = 3.5f;
+            shadowTransform.localPosition = new Vector3(.1f, 1.045f, 0);
         }
     }
 
@@ -196,7 +214,7 @@ public class Player : MonoBehaviour {
         canControl = inControl;
     }
 
-    IEnumerator DelayedRegainControl(float controlTime = .5f)
+    IEnumerator DelayedRegainControl(float controlTime = .25f)
     {
         float time = 0;
         while (time < controlTime)
