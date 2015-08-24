@@ -5,6 +5,7 @@ public class MonsterPlatform : MonoBehaviour {
 
     SpriteRenderer sprite;
     bool isRevealed = false;
+    bool canBeRevealed = true;
 
     public float MaxAlpha = .5f;
 
@@ -31,7 +32,7 @@ public class MonsterPlatform : MonoBehaviour {
 
     public void Reveal()
     {
-        if (!isRevealed) StartCoroutine(RevealOverTime(.75f));
+        if (!isRevealed && canBeRevealed) StartCoroutine(RevealOverTime(.75f));
     }
 
     IEnumerator RevealOverTime(float revealTime)
@@ -48,5 +49,10 @@ public class MonsterPlatform : MonoBehaviour {
 
         sprite.color = new Color(1, 1, 1, MaxAlpha);
         isRevealed = true;
+    }
+
+    public void SetCanBeRevealed(bool canReveal)
+    {
+        canBeRevealed = canReveal;
     }
 }

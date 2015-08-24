@@ -160,7 +160,7 @@ public class Player : MonoBehaviour {
         canControl = inControl;
     }
 
-    IEnumerator DelayedRegainControl(float controlTime = .25f)
+    IEnumerator DelayedRegainControl(float controlTime = .5f)
     {
         float time = 0;
         while (time < controlTime)
