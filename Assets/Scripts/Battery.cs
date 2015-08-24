@@ -5,11 +5,10 @@ public class Battery : MonoBehaviour {
 
     public float WobbleDistance = .2f;
     public float Speed = 20;
+    public GUIText CelebrationText;
 
     Vector3 startPosition;
     float angle = 0;
-
-    bool moveUp = true;
 
 	// Use this for initialization
 	void Start () {
@@ -23,4 +22,13 @@ public class Battery : MonoBehaviour {
 
         transform.position = startPosition + new Vector3(0, WobbleDistance * (Mathf.Sin(angle)));
 	}
+
+    public void PickedUp()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+        CelebrationText.text = "SUPERCHARGED!!!!";
+        CelebrationText.enabled = true;
+        CelebrationText.gameObject.GetComponent<RainbowText>().TextTriggered();
+        Destroy(gameObject);
+    }
 }

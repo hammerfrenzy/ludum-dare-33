@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 
     public Light FlashlightLight;
     public Animator _shadowAnimator;
+    public GUIText CelebrationText;
 
     Flashlight _flashlight;
     CharacterController2D _controller;
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour {
     float _damping = 20f;
     bool canJump = false;
     bool canControl = true;
+    bool SUPERCHARGED = false;
 
     void Awake()
     {
@@ -46,17 +48,25 @@ public class Player : MonoBehaviour {
 
     void ProcessActionInput()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             _flashlight.PlaceBelow();
-            if (canJump) _shadowAnimator.Play("GrabCliff");
-            else _shadowAnimator.Play("exposed");
+            if (SUPERCHARGED)
+            {
+                if (canJump) _shadowAnimator.Play("GrabCliff");
+                else _shadowAnimator.Play("exposed");
+            }
+            else
+            {
+                if (canJump) _shadowAnimator.Play("GrabCliff");
+                else _shadowAnimator.Play("exposed");
+            }
         }
-        else if (Input.GetKey(KeyCode.C))
+        else if (Input.GetKey(KeyCode.J))
         {
             _flashlight.PlaceBelow();
         }
-        else if (Input.GetKey(KeyCode.F))
+        else if (Input.GetKey(KeyCode.K))
         {
             _flashlight.PlaceBehind();
         }
@@ -84,7 +94,7 @@ public class Player : MonoBehaviour {
             if (transform.localScale.x > 0) FlipScale();
         }
 
-        if (canJump && Input.GetKeyDown(KeyCode.C))
+        if (canJump && Input.GetKeyDown(KeyCode.J))
         {
             velocity.y = Mathf.Sqrt(2 * jumpHeight * -gravity);
         }
@@ -126,9 +136,15 @@ public class Player : MonoBehaviour {
             StartCoroutine(DelayedRegainControl());
         }
 
-        if (other.gameObject.CompareTag("Platform"))
+        else if (other.gameObject.CompareTag("Platform"))
         {
             CheckPlatform(other);
+        }
+
+        else if (other.gameObject.CompareTag("Battery"))
+        {
+            other.gameObject.GetComponent<Battery>().PickedUp();
+            jumpHeight = 6;
         }
     }
 
@@ -151,17 +167,25 @@ public class Player : MonoBehaviour {
 
         else if (other.gameObject.CompareTag("SpookZone"))
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.J))
             {
                 Kid kid = other.GetComponentInParent<Kid>();
                 kid.GetSpooked(transform.position);
             }
         }
+
+        else if (other.gameObject.CompareTag("WinZone"))
+        {
+            _controller.velocity = Vector2.zero;
+            canControl = false;
+            CelebrationText.text = "CONGRATULATIONS! \nYOU DID IT!!!";
+            CelebrationText.enabled = true;
+        }
     }
 
     void CheckPlatform(Collider2D other)
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKey(KeyCode.K))
         {
             other.GetComponent<RevealPlatform>().Reveal();
         }

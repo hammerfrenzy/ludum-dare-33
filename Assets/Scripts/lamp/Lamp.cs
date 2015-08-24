@@ -7,6 +7,8 @@ public class Lamp : MonoBehaviour {
     public MonsterPlatform[] Platforms;
     public float OnTime = 2;
     public float OffTime = 2;
+    public bool StartsOn = false;
+    public float StartDelay = 0;
 
     Light lampLight;
     Animator animator;
@@ -22,10 +24,17 @@ public class Lamp : MonoBehaviour {
 	void Start () {
         lampLight = GetComponentInChildren<Light>();
         animator = GetComponent<Animator>();
+        if (StartsOn) isOn = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (StartDelay > 0)
+        {
+            StartDelay -= Time.deltaTime;
+            return;
+        }
+
         timer += Time.deltaTime;
         float compareTime = isOn ? OnTime : OffTime;
 

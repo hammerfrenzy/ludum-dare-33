@@ -24,6 +24,7 @@ public class MonsterPlatform : MonoBehaviour {
     {
         if (isRevealed)
         {
+            StopAllCoroutines();
             isRevealed = false;
             sprite.color = new Color(1, 1, 1, 0);
             gameObject.layer = LayerMask.NameToLayer("Trigger");
@@ -37,6 +38,7 @@ public class MonsterPlatform : MonoBehaviour {
 
     IEnumerator RevealOverTime(float revealTime)
     {
+        isRevealed = true;
         gameObject.layer = LayerMask.NameToLayer("Default");
         float time = 0;
         while (time < revealTime)
@@ -48,7 +50,6 @@ public class MonsterPlatform : MonoBehaviour {
         }
 
         sprite.color = new Color(1, 1, 1, MaxAlpha);
-        isRevealed = true;
     }
 
     public void SetCanBeRevealed(bool canReveal)
