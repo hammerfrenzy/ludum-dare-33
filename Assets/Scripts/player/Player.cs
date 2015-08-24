@@ -124,7 +124,12 @@ public class Player : MonoBehaviour {
             canControl = false;
             _controller.velocity = new Vector2(3 * direction, 2);
             StartCoroutine(DelayedRegainControl());
-        }       
+        }
+
+        if (other.gameObject.CompareTag("Platform"))
+        {
+            CheckPlatform(other);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -137,12 +142,11 @@ public class Player : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D other)
     {
+        if (!canControl) return;
+
         if (other.gameObject.CompareTag("Platform"))
         {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                other.GetComponent<RevealPlatform>().Reveal();
-            }
+            CheckPlatform(other);
         }
 
         else if (other.gameObject.CompareTag("SpookZone"))
@@ -152,6 +156,14 @@ public class Player : MonoBehaviour {
                 Kid kid = other.GetComponentInParent<Kid>();
                 kid.GetSpooked(transform.position);
             }
+        }
+    }
+
+    void CheckPlatform(Collider2D other)
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            other.GetComponent<RevealPlatform>().Reveal();
         }
     }
 

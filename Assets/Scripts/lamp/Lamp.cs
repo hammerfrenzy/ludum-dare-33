@@ -12,7 +12,12 @@ public class Lamp : MonoBehaviour {
     Animator animator;
     float timer = 0;
     bool isOn = false;
-    
+
+    void Awake()
+    {
+        if (Platforms == null) Platforms = new MonsterPlatform[0];
+    }
+
 	// Use this for initialization
 	void Start () {
         lampLight = GetComponentInChildren<Light>();

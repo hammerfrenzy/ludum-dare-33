@@ -41,6 +41,7 @@ public class Kid : MonoBehaviour {
         body.freezeRotation = false;
         body.velocity = new Vector2(3 * direction, 4);
         body.angularVelocity = Random.Range(-180f, 180f);
+        Destroy(gameObject, 5f);
     }
 
     void Flip()
