@@ -36,7 +36,6 @@ public class MonsterPlatform : MonoBehaviour {
 
     IEnumerator RevealOverTime(float revealTime)
     {
-        Debug.Log("Starting Reveal");
         gameObject.layer = LayerMask.NameToLayer("Default");
         float time = 0;
         while (time < revealTime)

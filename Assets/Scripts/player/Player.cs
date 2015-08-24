@@ -122,8 +122,8 @@ public class Player : MonoBehaviour {
         {
             float direction = other.gameObject.transform.position.x < transform.position.x ? 1 : -1;
             canControl = false;
-            _controller.velocity = new Vector2(3 * direction, 5);
-            StartCoroutine(DelayedRespawn());
+            _controller.velocity = new Vector2(3 * direction, 2);
+            StartCoroutine(DelayedRegainControl());
         }       
     }
 
@@ -158,6 +158,17 @@ public class Player : MonoBehaviour {
     public void SetInControl(bool inControl)
     {
         canControl = inControl;
+    }
+
+    IEnumerator DelayedRegainControl(float controlTime = .25f)
+    {
+        float time = 0;
+        while (time < controlTime)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+        canControl = true;
     }
 
     IEnumerator DelayedRespawn(float respawnTime = .75f)

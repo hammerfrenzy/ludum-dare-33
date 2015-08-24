@@ -56,7 +56,6 @@ namespace UnityStandardAssets._2D
         {
             transform.position = target.position;
             m_LastTargetPosition = target.position;
-            //m_LookAheadPos = target.position;
         }
     }
 }
