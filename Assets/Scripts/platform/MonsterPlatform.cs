@@ -3,11 +3,12 @@ using System.Collections;
 
 public class MonsterPlatform : MonoBehaviour {
 
+    public AudioClip RevealSound;
+    public float MaxAlpha = .5f;
+
     SpriteRenderer sprite;
     bool isRevealed = false;
     bool canBeRevealed = true;
-
-    public float MaxAlpha = .5f;
 
 	// Use this for initialization
 	void Start () {
@@ -33,7 +34,11 @@ public class MonsterPlatform : MonoBehaviour {
 
     public void Reveal()
     {
-        if (!isRevealed && canBeRevealed) StartCoroutine(RevealOverTime(.75f));
+        if (!isRevealed && canBeRevealed)
+        {
+            AudioSource.PlayClipAtPoint(RevealSound, transform.position, .75f);
+            StartCoroutine(RevealOverTime(.75f));
+        }
     }
 
     IEnumerator RevealOverTime(float revealTime)

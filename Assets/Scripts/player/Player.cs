@@ -15,6 +15,7 @@ public class Player : MonoBehaviour {
     public AudioClip scareClip1;
     public AudioClip scareClip2;
     public AudioClip scareClip3;
+    public AudioClip VictoryClip;
 
     Flashlight _flashlight;
     CharacterController2D _controller;
@@ -194,6 +195,8 @@ public class Player : MonoBehaviour {
 
         else if (other.gameObject.CompareTag("WinZone"))
         {
+            AudioSource.PlayClipAtPoint(VictoryClip, transform.position);
+            _animator.Play("victory");
             _controller.velocity = Vector2.zero;
             canControl = false;
             CelebrationText.text = "CONGRATULATIONS! \nYOU DID IT!!!";

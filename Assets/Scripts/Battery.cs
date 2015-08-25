@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Battery : MonoBehaviour {
 
+    public AudioClip PickupSound;
     public float WobbleDistance = .2f;
     public float Speed = 20;
     public GUIText CelebrationText;
@@ -25,6 +26,7 @@ public class Battery : MonoBehaviour {
 
     public void PickedUp()
     {
+        AudioSource.PlayClipAtPoint(PickupSound, transform.position);
         GetComponent<SpriteRenderer>().enabled = false;
         CelebrationText.text = "SUPERCHARGED!!!!";
         CelebrationText.enabled = true;
