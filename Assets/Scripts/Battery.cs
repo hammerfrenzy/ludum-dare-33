@@ -7,6 +7,7 @@ public class Battery : MonoBehaviour {
     public float WobbleDistance = .2f;
     public float Speed = 20;
     public GUIText CelebrationText;
+    public GameObject SecondaryKidWave;
 
     Vector3 startPosition;
     float angle = 0;
@@ -26,9 +27,10 @@ public class Battery : MonoBehaviour {
 
     public void PickedUp()
     {
+        SecondaryKidWave.SetActive(true);
         AudioSource.PlayClipAtPoint(PickupSound, transform.position);
         GetComponent<SpriteRenderer>().enabled = false;
-        CelebrationText.text = "SUPERCHARGED!!!!";
+        CelebrationText.text = "SUPERCHARGED!!!! \nGET BACK HOME!";
         CelebrationText.enabled = true;
         CelebrationText.gameObject.GetComponent<RainbowText>().TextTriggered();
         Destroy(gameObject);

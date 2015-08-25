@@ -6,6 +6,7 @@ public class FallDeath : MonoBehaviour {
 
     public Transform currentCheckpoint;
     public Camera2DFollow _cameraFollow;
+    public AudioClip Splat;
 
     Player _player;
     CharacterController2D _controller;
@@ -24,7 +25,10 @@ public class FallDeath : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) 
     {
         if (other.gameObject.CompareTag("SpawnAtCheckpoint"))
+        {
+            AudioSource.PlayClipAtPoint(Splat, transform.position);
             StartCoroutine(DelayedMoveToCheckpoint());
+        }
     }
 
     public void MoveToCheckpoint()

@@ -4,6 +4,7 @@ using System.Collections;
 public class MonsterPlatform : MonoBehaviour {
 
     public AudioClip RevealSound;
+    public AudioClip HideSound;
     public float MaxAlpha = .5f;
 
     SpriteRenderer sprite;
@@ -25,6 +26,7 @@ public class MonsterPlatform : MonoBehaviour {
     {
         if (isRevealed)
         {
+            AudioSource.PlayClipAtPoint(HideSound, transform.position);
             StopAllCoroutines();
             isRevealed = false;
             sprite.color = new Color(1, 1, 1, 0);
